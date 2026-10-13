@@ -92,6 +92,13 @@ def test_import_csv_and_json(conn, tmp_path):
     assert service.import_questions(conn, str(json_path))["added"] == 1
 
 
+def test_same_question_on_different_passages_not_deduped(conn):
+    base = dict(level="cet4", type="reading", stem="What is the main idea?", choices=["a", "b", "c", "d"], answer="C")
+    assert service.add_question(conn, material="Passage one.", **base)["added"] is True
+    assert service.add_question(conn, material="Passage two.", **base)["added"] is True
+    assert service.add_question(conn, material="Passage two.", **base)["added"] is False
+
+
 def test_seed_file_is_valid(conn):
     items = json.loads(importer.SEED_FILE.read_text(encoding="utf-8"))
     for q in items:

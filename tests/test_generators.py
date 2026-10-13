@@ -44,3 +44,59 @@ def test_generation_is_idempotent(conn):
     counts = generators.generate_all(conn, "cet4")
     assert sum(counts.values()) == 0
     assert conn.execute("SELECT COUNT(*) FROM questions").fetchone()[0] == before
+
+
+def _w(word, pos="v", syno=(), real=()):
+    return {"id": 0, "word": word, "pos": pos, "uk_phone": None, "trans": [{"pos": pos, "cn": word + "义"}],
+            "sentences": [], "real_exam": list(real), "syno": set(syno)}
+
+
+POOL = [_w(x) for x in ("attract", "seize", "engage", "adopt", "affect", "allocate", "assess", "avoid")]
+
+
+def test_cloze_skips_sentence_where_word_repeats():
+    w = _w("task", real=[{"en": "each task starts when the previous task ends"}, {"en": "a hard task indeed"}])
+    q = generators.gen_context_cloze("cet4", w, POOL)
+    assert q["stem"].endswith("a hard ______ indeed")
+    only_repeat = _w("task", real=[{"en": "each task starts when the previous task ends"}])
+    assert generators.gen_context_cloze("cet4", only_repeat, POOL) is None
+
+
+def test_distractors_exclude_synonyms():
+    target = _w("absorb", syno={"attract", "seize", "engage"})
+    for kind in ("a", "b", "c", "d", "e"):
+        rng = generators._rng("cet4", "absorb", kind)
+        ds = generators._pick_distractors(rng, POOL, target, 3, lambda c: c["word"], set())
+        assert not {d["word"] for d in ds} & target["syno"]
+
+
+def test_spelling_hides_phonetic_identical_to_word():
+    w = _w("tent", pos="n")
+    w["uk_phone"] = "tent"
+    assert "音标" not in generators.gen_spelling("cet4", w)["stem"]
+    w["uk_phone"] = "əb'sɔ:b"
+    assert "音标" in generators.gen_spelling("cet4", w)["stem"]
+
+
+def test_remove_stale_keeps_answered_questions(conn):
+    from cet_mcp import service
+
+    ids = [r[0] for r in conn.execute("SELECT id FROM questions WHERE type = 'en2cn' LIMIT 2")]
+    service.submit_answer(conn, ids[0], "A")
+    removed = generators.remove_stale(conn, "cet4", ("en2cn",), keep=set())
+    left = {r[0] for r in conn.execute("SELECT id FROM questions WHERE type = 'en2cn'")}
+    assert left == {ids[0]} and removed >= 1
+
+
+def test_regeneration_updates_in_place_and_keeps_history(conn):
+    from cet_mcp import service
+
+    row = conn.execute("SELECT id, word_id FROM questions WHERE type = 'cn2en' LIMIT 1").fetchone()
+    service.submit_answer(conn, row["id"], "A")
+    # 模拟旧版生成器留下的错误内容
+    conn.execute("UPDATE questions SET choices_json = '[\"x\",\"y\",\"z\",\"w\"]', hash = 'old' WHERE id = ?", (row["id"],))
+    generators.generate_all(conn, "cet4")
+    fixed = conn.execute("SELECT * FROM questions WHERE id = ?", (row["id"],)).fetchone()
+    assert "x" not in json.loads(fixed["choices_json"])
+    assert conn.execute("SELECT COUNT(*) FROM questions WHERE type = 'cn2en' AND word_id = ?", (row["word_id"],)).fetchone()[0] == 1
+    assert conn.execute("SELECT COUNT(*) FROM attempts WHERE question_id = ?", (row["id"],)).fetchone()[0] == 1

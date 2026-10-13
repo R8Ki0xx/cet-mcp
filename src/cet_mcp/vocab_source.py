@@ -110,7 +110,8 @@ def parse_entry(entry: dict) -> dict | None:
     for e in c.get("exam") or []:
         choices = sorted(e.get("choices") or [], key=lambda x: x.get("choiceIndex", 0))
         ans = (e.get("answer") or {}).get("rightIndex")
-        if not e.get("question") or not choices or not ans:
+        # 源数据里少数题干缺了空格（"___"），无法作答，跳过
+        if not e.get("question") or "_" not in e["question"] or not choices or not ans:
             continue
         exams.append(
             {
@@ -145,6 +146,7 @@ def load_words(conn: sqlite3.Connection, level: str, path: Path) -> tuple[int, i
     """把词条写入 words 表（源数据有重复词条，按单词合并），真题词汇题写入 questions 表。
     返回 (该级别去重后的词数, 新增真题数)。"""
     n_exam = 0
+    keep: set[int] = set()
     for entry in iter_entries(path):
         w = parse_entry(entry)
         if not w:
@@ -171,19 +173,25 @@ def load_words(conn: sqlite3.Connection, level: str, path: Path) -> tuple[int, i
         for e in w["exams"]:
             if not 0 <= e["answer_index"] < len(e["choices"]):
                 continue
+            answer = chr(ord("A") + e["answer_index"])
+            qhash = db.question_hash(level, "vocab_real", e["question"], answer, e["choices"])
             qid = db.insert_question(
                 conn,
                 level=level,
                 qtype="vocab_real",
                 stem=e["question"],
                 choices=e["choices"],
-                answer=chr(ord("A") + e["answer_index"]),
+                answer=answer,
                 explanation=e["explain"] or None,
                 source=f"{level.upper()} 真题词汇（{SOURCE_NAME}）",
                 word_id=word_id,
                 tags=[w["word"]],
             )
             n_exam += qid is not None
+            row = conn.execute("SELECT id FROM questions WHERE hash = ?", (qhash,)).fetchone()
+            if row:
+                keep.add(row["id"])
+    generators.remove_stale(conn, level, ("vocab_real",), keep)
     n_words = conn.execute("SELECT COUNT(*) FROM words WHERE level = ?", (level,)).fetchone()[0]
     return n_words, n_exam
 
@@ -204,7 +212,13 @@ def build(levels: list[str] | None = None, force: bool = False, conn: sqlite3.Co
                 n_words, n_exam = load_words(conn, level, path)
                 generated = generators.generate_all(conn, level)
                 db.set_meta(conn, f"built_{level}", "1")
-            stats[level] = {"words": n_words, "vocab_real_new": n_exam, **{f"{k}_new": v for k, v in generated.items()}}
+            removed = generated.pop("removed_stale", 0)
+            stats[level] = {
+                "words": n_words,
+                "vocab_real_new": n_exam,
+                **{f"{k}_new": v for k, v in generated.items()},
+                "removed_stale": removed,
+            }
             log(f"{level}: {stats[level]}")
         with conn:
             from . import importer

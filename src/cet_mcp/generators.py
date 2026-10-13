@@ -47,8 +47,11 @@ def _pick_distractors(
     chosen: list[dict] = []
     seen = set(exclude_values)
     candidates = rng.sample(pool, min(len(pool), k * 8))
+    tw = target["word"].lower()
     for c in candidates:
-        if c["word"].lower() == target["word"].lower():
+        cw = c["word"].lower()
+        # 排除目标词本身和互为同近义词的词，避免一题多解
+        if cw == tw or cw in target.get("syno", ()) or tw in c.get("syno", ()):
             continue
         v = key(c)
         if not v or v in seen:
@@ -82,6 +85,9 @@ def load_level_words(conn: sqlite3.Connection, level: str) -> list[dict]:
                 "trans": trans,
                 "sentences": json.loads(r["sentences_json"] or "[]"),
                 "real_exam": json.loads(r["real_exam_json"] or "[]"),
+                "syno": {
+                    x.lower() for g in json.loads(r["syno_json"] or "[]") for x in g.get("words", []) if x
+                },
             }
         )
     return words
@@ -128,7 +134,16 @@ def gen_spelling(level: str, w: dict) -> dict | None:
     word = w["word"]
     if not SPELL_RE.match(word):
         return None
-    phone = f"\n音标：/{w['uk_phone']}/" if w.get("uk_phone") else ""
+    phone = w.get("uk_phone") or ""
+    # 音标与拼写字母完全相同（如 tent /tent/），或音标里夹带了单词本身（如 read 的
+    # "(read, read) red"）时不显示音标，否则等于直接给出答案
+    leaks = re.sub(r"[^a-z]", "", phone.lower()) == word.lower() or re.search(
+        rf"(?<![a-z]){re.escape(word.lower())}(?![a-z])", phone.lower()
+    )
+    if phone and not leaks:
+        phone = f"\n音标：/{phone}/"
+    else:
+        phone = ""
     hint = word[0] + " _" * (len(word) - 1)
     stem = f"根据释义拼写单词：\n释义：{meaning(w['trans'], limit=3, max_len=80)}{phone}\n提示：{hint}（共 {len(word)} 个字母）"
     return {"stem": stem, "choices": None, "answer": word}
@@ -143,7 +158,8 @@ def gen_context_cloze(level: str, w: dict, pool: list[dict]) -> dict | None:
     pattern = re.compile(rf"(?<![A-Za-z]){re.escape(w['word'])}(?![A-Za-z])", re.IGNORECASE)
     for s in w["real_exam"]:
         text = (s.get("en") or "").strip()
-        if not pattern.search(text):
+        # 目标词只出现一次的句子才能出题，出现多次时挖掉一处会泄露答案
+        if len(pattern.findall(text)) != 1:
             continue
         rng = _rng(level, w["word"], "context_cloze")
         ds = _pick_distractors(rng, pool, w, N_CHOICES - 1, lambda c: c["word"].lower(), {w["word"].lower()})
@@ -162,8 +178,13 @@ def gen_context_cloze(level: str, w: dict, pool: list[dict]) -> dict | None:
     return None
 
 
+GENERATED_TYPES = ("context_cloze", "en2cn", "cn2en", "spelling")
+
+
 def generate_all(conn: sqlite3.Connection, level: str) -> dict[str, int]:
+    """生成并入库：已有的题原地更新，新词插入；最后清理现在已不再生成且从未作答过的题。"""
     words = load_level_words(conn, level)
+    keep: set[int] = set()
     by_pos, all_words = _pools(words)
     counts = {"context_cloze": 0, "en2cn": 0, "cn2en": 0, "spelling": 0}
     for w in words:
@@ -178,17 +199,35 @@ def generate_all(conn: sqlite3.Connection, level: str) -> dict[str, int]:
         for qtype, q in made.items():
             if not q:
                 continue
-            qid = db.insert_question(
+            qid, inserted = db.upsert_generated(
                 conn,
                 level=level,
                 qtype=qtype,
+                word_id=w["id"],
                 stem=q["stem"],
                 choices=q["choices"],
                 answer=q["answer"],
                 explanation=q.get("explanation_prefix", "") + brief,
                 source=q.get("source", f"{level.upper()} 大纲词汇（自动生成）"),
-                word_id=w["id"],
                 tags=[w["word"]],
             )
-            counts[qtype] += qid is not None
+            if qid:
+                keep.add(qid)
+            counts[qtype] += inserted
+    counts["removed_stale"] = remove_stale(conn, level, GENERATED_TYPES, keep)
     return counts
+
+
+def remove_stale(conn: sqlite3.Connection, level: str, types: tuple[str, ...], keep: set[int]) -> int:
+    """删除题号不在 keep 中、且没有作答记录和复习记录的题（用户做过的题一律保留）。"""
+    marks = ",".join("?" * len(types))
+    rows = conn.execute(
+        f"""SELECT q.id FROM questions q
+            WHERE q.level = ? AND q.type IN ({marks})
+              AND NOT EXISTS (SELECT 1 FROM attempts a WHERE a.question_id = q.id)
+              AND NOT EXISTS (SELECT 1 FROM reviews r WHERE r.question_id = q.id)""",
+        (level, *types),
+    ).fetchall()
+    stale = [(r["id"],) for r in rows if r["id"] not in keep]
+    conn.executemany("DELETE FROM questions WHERE id = ?", stale)
+    return len(stale)

@@ -115,12 +115,36 @@ def connect(path: str | Path | None = None) -> sqlite3.Connection:
     conn.execute("PRAGMA foreign_keys = ON")
     conn.execute("PRAGMA journal_mode = WAL")
     conn.executescript(SCHEMA)
+    _migrate(conn)
     return conn
 
 
-def question_hash(level: str, qtype: str, stem: str, answer: str) -> str:
-    raw = "\x1f".join([level, qtype, stem.strip(), answer.strip()])
+# v1：级别+题型+题干+答案；v2 起加入选项和材料（不同文章下的同一问法不再被误判为重复题）
+HASH_VERSION = "2"
+
+
+def question_hash(
+    level: str, qtype: str, stem: str, answer: str, choices: list[str] | None = None, material: str | None = None
+) -> str:
+    raw = "\x1f".join(
+        [level, qtype, stem.strip(), answer.strip(), "\x1e".join(choices or []), (material or "").strip()]
+    )
     return hashlib.sha1(raw.encode("utf-8")).hexdigest()
+
+
+def row_hash(row: sqlite3.Row) -> str:
+    choices = json.loads(row["choices_json"]) if row["choices_json"] else None
+    return question_hash(row["level"], row["type"], row["stem"], row["answer"], choices, row["material"])
+
+
+def _migrate(conn: sqlite3.Connection) -> None:
+    if get_meta(conn, "hash_version") == HASH_VERSION:
+        return
+    with conn:
+        rows = conn.execute("SELECT * FROM questions").fetchall()
+        # 新算法比旧算法区分得更细，旧库中互不重复的题在新算法下仍互不重复
+        conn.executemany("UPDATE questions SET hash = ? WHERE id = ?", [(row_hash(r), r["id"]) for r in rows])
+        set_meta(conn, "hash_version", HASH_VERSION)
 
 
 def insert_question(
@@ -155,10 +179,53 @@ def insert_question(
             source,
             word_id,
             tags or None,
-            question_hash(level, qtype, stem, answer),
+            question_hash(level, qtype, stem, answer, choices, material),
         ),
     )
     return cur.lastrowid if cur.rowcount else None
+
+
+def upsert_generated(
+    conn: sqlite3.Connection,
+    *,
+    level: str,
+    qtype: str,
+    word_id: int,
+    stem: str,
+    answer: str,
+    choices: list[str] | None,
+    explanation: str | None,
+    source: str | None,
+    tags: list[str],
+) -> tuple[int | None, bool]:
+    """自动生成的题以 (级别, 题型, 单词) 为身份：已存在就原地更新内容（保留题号和做题记录），
+    否则插入。返回 (题号, 是否新插入)。"""
+    existing = conn.execute(
+        """SELECT q.id FROM questions q WHERE q.level = ? AND q.type = ? AND q.word_id = ?
+           ORDER BY EXISTS (SELECT 1 FROM attempts a WHERE a.question_id = q.id) DESC, q.id DESC LIMIT 1""",
+        (level, qtype, word_id),
+    ).fetchone()
+    if not existing:
+        qid = insert_question(
+            conn, level=level, qtype=qtype, stem=stem, answer=answer, choices=choices,
+            explanation=explanation, source=source, word_id=word_id, tags=tags,
+        )
+        return qid, qid is not None
+    conn.execute(
+        """UPDATE OR IGNORE questions SET stem = ?, choices_json = ?, answer = ?, explanation = ?, source = ?,
+           tags = ?, hash = ? WHERE id = ?""",
+        (
+            stem,
+            json.dumps(choices, ensure_ascii=False) if choices else None,
+            answer,
+            explanation,
+            source,
+            ",".join(tags),
+            question_hash(level, qtype, stem, answer, choices),
+            existing["id"],
+        ),
+    )
+    return existing["id"], False
 
 
 def get_meta(conn: sqlite3.Connection, key: str) -> str | None:
