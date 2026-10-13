@@ -1,0 +1,236 @@
+[
+  {
+    "level": "cet4", "type": "grammar", "tags": ["虚拟语气"],
+    "stem": "If I ______ more time last weekend, I would have finished the report.",
+    "choices": ["have", "had had", "would have", "had"],
+    "answer": "B",
+    "explanation": "与过去事实相反的虚拟条件句：if 从句用 had done，主句用 would have done。last weekend 和主句 would have finished 都提示过去。"
+  },
+  {
+    "level": "cet4", "type": "grammar", "tags": ["定语从句"],
+    "stem": "The library, ______ was built in the 1950s, is going to be renovated next year.",
+    "choices": ["that", "which", "where", "what"],
+    "answer": "B",
+    "explanation": "非限制性定语从句（有逗号）不能用 that；先行词 library 是物，在从句中作主语，用 which。where 在从句中作状语，不能作主语。"
+  },
+  {
+    "level": "cet4", "type": "grammar", "tags": ["主谓一致"],
+    "stem": "Neither the students nor the teacher ______ aware of the change in the schedule.",
+    "choices": ["were", "are", "was", "have been"],
+    "answer": "C",
+    "explanation": "neither...nor... 连接主语时谓语遵循就近原则，与 the teacher（单数）一致；句子叙述过去情况，用 was。"
+  },
+  {
+    "level": "cet4", "type": "grammar", "tags": ["非谓语动词"],
+    "stem": "______ from the top of the tower, the city looks like a giant map.",
+    "choices": ["Seeing", "Seen", "To see", "Having seen"],
+    "answer": "B",
+    "explanation": "逻辑主语 the city 与 see 是被动关系（城市被看），用过去分词 Seen 作状语。"
+  },
+  {
+    "level": "cet4", "type": "grammar", "tags": ["固定搭配"],
+    "stem": "After living in the countryside for years, she is accustomed ______ up at dawn.",
+    "choices": ["to get", "to getting", "get", "for getting"],
+    "answer": "B",
+    "explanation": "be accustomed to / be used to 中的 to 是介词，后接动名词，表示\"习惯于做某事\"。同类结构：look forward to doing, devote oneself to doing, object to doing。"
+  },
+  {
+    "level": "cet4", "type": "grammar", "tags": ["时态"],
+    "stem": "By the time you arrive at the station, the train ______.",
+    "choices": ["will leave", "has left", "will have left", "had left"],
+    "answer": "C",
+    "explanation": "by the time + 一般现在时（表将来），主句用将来完成时 will have done，表示到将来某时之前已完成。"
+  },
+  {
+    "level": "cet4", "type": "grammar", "tags": ["倒装"],
+    "stem": "Only when he lost his job ______ the importance of saving money.",
+    "choices": ["he realized", "did he realize", "he did realize", "realized he"],
+    "answer": "B",
+    "explanation": "Only + 状语（从句）位于句首时，主句部分倒装：助动词 did + 主语 + 动词原形。"
+  },
+  {
+    "level": "cet4", "type": "grammar", "tags": ["名词性从句"],
+    "stem": "______ we need most at the moment is a clear plan for the next step.",
+    "choices": ["That", "Which", "What", "Whether"],
+    "answer": "C",
+    "explanation": "主语从句缺宾语（need 的宾语），且表示\"……的东西\"，用 What。That 只起连接作用，不能在从句中充当成分。"
+  },
+  {
+    "level": "cet4", "type": "grammar", "tags": ["形容词比较级"],
+    "stem": "The more you practice speaking English, ______ you will become.",
+    "choices": ["the more confident", "more confident", "the most confident", "most confident"],
+    "answer": "A",
+    "explanation": "\"the + 比较级..., the + 比较级...\" 表示\"越……就越……\"。"
+  },
+  {
+    "level": "cet4", "type": "grammar", "tags": ["介词搭配"],
+    "stem": "The success of the project depends largely ______ the cooperation of all departments.",
+    "choices": ["in", "on", "with", "at"],
+    "answer": "B",
+    "explanation": "depend on / upon 依赖、取决于，是固定搭配。"
+  },
+  {
+    "level": "cet6", "type": "grammar", "tags": ["虚拟语气"],
+    "stem": "It is essential that every applicant ______ the form before the deadline.",
+    "choices": ["submits", "submit", "will submit", "submitted"],
+    "answer": "B",
+    "explanation": "It is essential / vital / necessary that... 结构中，从句用虚拟语气 (should) + 动词原形，故用 submit。"
+  },
+  {
+    "level": "cet6", "type": "grammar", "tags": ["独立主格"],
+    "stem": "______, the committee postponed the outdoor ceremony.",
+    "choices": ["The weather being unpredictable", "Being the weather unpredictable", "The weather was unpredictable", "Because the weather unpredictable"],
+    "answer": "A",
+    "explanation": "独立主格结构：名词/代词 + 分词，在句中作原因状语。C 缺连词，形成两个独立句；D 缺谓语 was。"
+  },
+  {
+    "level": "cet6", "type": "grammar", "tags": ["虚拟语气"],
+    "stem": "Had the government acted earlier, the crisis ______.",
+    "choices": ["could be avoided", "could have been avoided", "can be avoided", "would avoid"],
+    "answer": "B",
+    "explanation": "省略 if 的倒装虚拟条件句 Had...done，表示与过去事实相反，主句用 could/would have done；crisis 与 avoid 是被动关系。"
+  },
+  {
+    "level": "cet6", "type": "grammar", "tags": ["词义辨析"],
+    "stem": "The new policy is intended to ______ the burden on small businesses rather than add to it.",
+    "choices": ["alleviate", "aggravate", "accelerate", "accumulate"],
+    "answer": "A",
+    "explanation": "rather than add to it 提示与\"增加负担\"相反，alleviate 减轻；aggravate 加重；accelerate 加速；accumulate 积累。"
+  },
+  {
+    "level": "cet6", "type": "grammar", "tags": ["让步状语从句"],
+    "stem": "______ hard the task may seem, we must complete it on time.",
+    "choices": ["However", "Whatever", "Although", "No matter"],
+    "answer": "A",
+    "explanation": "However + 形容词/副词 + 主语 + 谓语 = No matter how...，表示\"无论多么……\"。No matter 后缺 how。"
+  },
+  {
+    "level": "cet6", "type": "grammar", "tags": ["同位语从句"],
+    "stem": "There is growing evidence ______ regular exercise can improve memory.",
+    "choices": ["which", "what", "that", "whether"],
+    "answer": "C",
+    "explanation": "that 引导同位语从句解释 evidence 的内容，在从句中不作成分；which/what 需要在从句中充当成分。"
+  },
+  {
+    "level": "cet6", "type": "grammar", "tags": ["词义辨析"],
+    "stem": "Critics argue that the documentary gives a ______ picture of rural life, ignoring its many hardships.",
+    "choices": ["comprehensive", "distorted", "objective", "vivid"],
+    "answer": "B",
+    "explanation": "ignoring its many hardships 说明描绘不真实、片面，distorted（歪曲的）符合；comprehensive 全面的、objective 客观的与语境相反。"
+  },
+  {
+    "level": "cet6", "type": "grammar", "tags": ["非谓语动词"],
+    "stem": "The professor's proposal, if ______, would change the way the course is taught.",
+    "choices": ["adopting", "to adopt", "adopted", "being adopted"],
+    "answer": "C",
+    "explanation": "if adopted 是 if it were adopted 的省略形式，proposal 与 adopt 为被动关系，用过去分词。"
+  },
+  {
+    "level": "cet6", "type": "grammar", "tags": ["固定搭配"],
+    "stem": "The findings of the study are ______ with earlier research on sleep and learning.",
+    "choices": ["consistent", "constant", "considerate", "contrary"],
+    "answer": "A",
+    "explanation": "be consistent with 与……一致；be contrary to 与……相反（介词是 to，不是 with）；constant 持续的；considerate 体贴的。"
+  },
+  {
+    "level": "cet6", "type": "grammar", "tags": ["强调句"],
+    "stem": "It was not until she moved abroad ______ she began to appreciate her hometown cuisine.",
+    "choices": ["when", "that", "since", "before"],
+    "answer": "B",
+    "explanation": "强调句型 It was not until... that...（直到……才……），强调句中连接词用 that。"
+  },
+
+  {
+    "level": "cet4", "type": "translation", "tags": ["传统文化", "春节"],
+    "stem": "请将下面这段话翻译成英文（四级段落翻译，建议用时 30 分钟）。",
+    "material": "春节是中国最重要的传统节日，通常在一月底或二月初。节日前，人们会打扫房屋，贴春联，购买年货。除夕之夜，全家人团聚在一起吃年夜饭，很多人还会一边看电视节目一边守岁。春节期间，人们走亲访友，互相拜年，孩子们会收到装有压岁钱的红包。近年来，越来越多的人选择在春节期间外出旅游，但团圆依然是这个节日的核心意义。",
+    "answer": "The Spring Festival is the most important traditional festival in China, usually falling in late January or early February. Before the festival, people clean their houses, put up Spring Festival couplets and buy goods for the New Year. On New Year's Eve, the whole family gets together for the reunion dinner, and many people stay up late watching TV programs to see the old year out. During the Spring Festival, people visit relatives and friends to exchange New Year greetings, and children receive red envelopes containing lucky money. In recent years, more and more people have chosen to travel during the holiday, but family reunion remains the core meaning of the festival.",
+    "explanation": "评分要点（满分 5 分制）：\n1. 关键词：春联 Spring Festival couplets；年货 New Year goods/purchases；年夜饭 reunion dinner；守岁 stay up late to see the old year out；拜年 exchange New Year greetings；压岁钱 lucky money。\n2. 句式：\"通常在……\" 可用分词 falling in 作后置定语；\"一边……一边……\" 用 while doing 或分词伴随。\n3. 时态：一般现在时为主，\"近年来\" 用现在完成时。\n4. 扣分点：漏译整句（-1）；关键文化词误译（-0.5/处）；主谓不一致、时态混乱（-0.5/处）。"
+  },
+  {
+    "level": "cet4", "type": "translation", "tags": ["社会发展", "共享单车"],
+    "stem": "请将下面这段话翻译成英文（四级段落翻译）。",
+    "material": "共享单车在中国许多城市已经十分普及。用户只需用手机扫描二维码就能解锁单车，骑到目的地后可以将车停放在任何指定区域。共享单车不仅方便了人们的短途出行，也有助于减少交通拥堵和空气污染。然而，乱停乱放等问题也给城市管理带来了挑战。为此，一些城市出台了相关规定，引导用户文明使用。",
+    "answer": "Bike-sharing has become very popular in many Chinese cities. Users only need to scan a QR code with their mobile phones to unlock a bike, and after riding to their destination, they can park it in any designated area. Shared bikes not only make short trips more convenient but also help reduce traffic congestion and air pollution. However, problems such as random parking have posed challenges to urban management. To address this, some cities have introduced regulations to guide users to use the bikes in a responsible way.",
+    "explanation": "评分要点：\n1. 关键词：共享单车 bike-sharing / shared bikes；扫描二维码 scan a QR code；指定区域 designated area；交通拥堵 traffic congestion；乱停乱放 random/disorderly parking。\n2. \"不仅……也……\" 用 not only... but also...，注意主语一致。\n3. \"带来挑战\" pose challenges to；\"出台规定\" introduce/issue regulations。\n4. 时态：\"已经十分普及\"、\"出台了\" 用现在完成时。"
+  },
+  {
+    "level": "cet4", "type": "translation", "tags": ["传统文化", "茶"],
+    "stem": "请将下面这段话翻译成英文（四级段落翻译）。",
+    "material": "中国是茶的故乡，饮茶在中国已有几千年的历史。中国茶种类繁多，主要包括绿茶、红茶、乌龙茶等。在中国人看来，茶不仅是一种饮品，更是一种生活方式。朋友来访时，主人常常会泡一壶好茶来招待客人。如今，中国茶已经传播到世界各地，成为中外文化交流的重要媒介。",
+    "answer": "China is the hometown of tea, and tea drinking has a history of thousands of years in China. There is a wide variety of Chinese tea, mainly including green tea, black tea and oolong tea. In the eyes of Chinese people, tea is not merely a drink but also a way of life. When friends come to visit, the host often makes a pot of good tea to entertain the guests. Today, Chinese tea has spread all over the world and become an important medium for cultural exchanges between China and other countries.",
+    "explanation": "评分要点：\n1. 红茶译为 black tea（不是 red tea）；乌龙茶 oolong tea。\n2. \"种类繁多\" a wide variety of；\"在中国人看来\" in the eyes of / to Chinese people。\n3. \"不仅是……更是……\" not merely/only... but also...。\n4. \"中外文化交流\" cultural exchanges between China and other countries；\"媒介\" medium/bridge。"
+  },
+  {
+    "level": "cet4", "type": "translation", "tags": ["教育", "网课"],
+    "stem": "请将下面这段话翻译成英文（四级段落翻译）。",
+    "material": "随着互联网技术的发展，在线教育在中国迅速兴起。学生可以通过电脑或手机随时随地学习各种课程，这为偏远地区的孩子提供了接受优质教育的机会。在线学习还让成年人能够利用业余时间提升自己的技能。不过，在线教育也要求学习者具备较强的自律能力。专家认为，线上与线下教学相结合将是未来教育发展的趋势。",
+    "answer": "With the development of Internet technology, online education has been booming in China. Students can take all kinds of courses anytime and anywhere through computers or mobile phones, which provides children in remote areas with access to high-quality education. Online learning also enables adults to improve their skills in their spare time. However, online education requires learners to have strong self-discipline. Experts believe that combining online and offline teaching will be the trend of future education.",
+    "explanation": "评分要点：\n1. \"随着……\" with the development of；\"迅速兴起\" boom / rise rapidly。\n2. \"随时随地\" anytime and anywhere；\"偏远地区\" remote areas；\"优质教育\" high-quality education。\n3. 用 which 引导非限制性定语从句合并长句，体现句式变化可加分。\n4. \"自律能力\" self-discipline；\"线上与线下相结合\" combining online and offline teaching / blended learning。"
+  },
+  {
+    "level": "cet6", "type": "translation", "tags": ["传统文化", "书法"],
+    "stem": "请将下面这段话翻译成英文（六级段落翻译，建议用时 30 分钟）。",
+    "material": "书法是中国独有的艺术形式，被誉为\"无言的诗、无声的乐\"。它以毛笔和墨为主要工具，通过线条的粗细、轻重和节奏来表现书写者的情感与个性。历史上涌现出许多著名的书法家，他们的作品至今仍被视为珍贵的文化遗产。学习书法不仅能提高审美能力，还能培养耐心和专注力。在数字化时代，越来越多的年轻人重新对书法产生了兴趣，许多学校也开设了书法课程，以传承这一古老的艺术。",
+    "answer": "Calligraphy is an art form unique to China, and it is praised as \"wordless poetry and silent music\". With the writing brush and ink as its main tools, it expresses the emotions and personality of the writer through the thickness, weight and rhythm of its strokes. Many famous calligraphers have emerged throughout history, and their works are still regarded as precious cultural heritage today. Learning calligraphy can not only improve one's aesthetic ability but also cultivate patience and concentration. In the digital age, more and more young people have rediscovered their interest in calligraphy, and many schools have offered calligraphy courses to pass on this ancient art.",
+    "explanation": "评分要点（六级要求句式更多样）：\n1. 关键词：书法 calligraphy；毛笔 writing brush；文化遗产 cultural heritage；审美能力 aesthetic ability/appreciation；数字化时代 the digital age。\n2. \"被誉为\" be praised/known as；\"以……为主要工具\" 可用 with 复合结构。\n3. \"涌现出\" emerge；\"传承\" pass on / carry forward。\n4. 加分：合理使用分词结构、非限制性定语从句合并短句；扣分：中式直译（如 \"no words poem\"）。"
+  },
+  {
+    "level": "cet6", "type": "translation", "tags": ["科技", "高铁"],
+    "stem": "请将下面这段话翻译成英文（六级段落翻译）。",
+    "material": "过去十多年里，中国高速铁路建设取得了举世瞩目的成就，运营里程居世界首位。高铁大大缩短了城市之间的时空距离，使\"朝发夕至\"成为现实。它不仅为人们出行提供了便利，也促进了沿线地区的经济发展和人员交流。与此同时，中国还积极参与海外铁路项目建设，向世界分享自己的技术和经验。高铁已成为展示中国创新能力的一张亮丽名片。",
+    "answer": "Over the past decade or so, China has made remarkable achievements in the construction of high-speed railways, with its operating mileage ranking first in the world. High-speed rail has greatly shortened the distance in time and space between cities, making it possible to depart in the morning and arrive in the evening. It has not only made travel more convenient, but also promoted economic development and personnel exchanges in the regions along the lines. Meanwhile, China has actively participated in the construction of overseas railway projects, sharing its technology and experience with the world. High-speed rail has become a shining calling card that showcases China's capacity for innovation.",
+    "explanation": "评分要点：\n1. \"举世瞩目的成就\" remarkable / world-renowned achievements；\"运营里程\" operating mileage；\"居世界首位\" rank first in the world（可用 with 复合结构）。\n2. \"朝发夕至\" 意译 depart in the morning and arrive in the evening，不要逐字硬译。\n3. \"沿线地区\" regions along the lines；\"名片\" calling card / business card（比喻义）。\n4. 时态：成就类用现在完成时。"
+  },
+  {
+    "level": "cet6", "type": "translation", "tags": ["社会", "乡村振兴"],
+    "stem": "请将下面这段话翻译成英文（六级段落翻译）。",
+    "material": "近年来，中国大力推进乡村振兴，许多农村地区发生了翻天覆地的变化。道路、网络等基础设施不断完善，农民的收入显著提高。不少年轻人选择返回家乡创业，借助电子商务平台把当地特产销往全国各地。乡村旅游也蓬勃发展，吸引了大量城市居民前来体验田园生活。这些变化不仅改善了农民的生活条件，也为缩小城乡差距作出了贡献。",
+    "answer": "In recent years, China has vigorously promoted rural revitalization, and many rural areas have undergone tremendous changes. Infrastructure such as roads and the Internet has been continuously improved, and farmers' incomes have risen significantly. Many young people have chosen to return to their hometowns to start businesses, selling local specialties across the country through e-commerce platforms. Rural tourism is also booming, attracting large numbers of urban residents to experience pastoral life. These changes have not only improved farmers' living conditions but also contributed to narrowing the gap between urban and rural areas.",
+    "explanation": "评分要点：\n1. 关键词：乡村振兴 rural revitalization；翻天覆地的变化 tremendous/earth-shaking changes；基础设施 infrastructure（不可数）；特产 local specialties；电子商务 e-commerce；田园生活 pastoral/rural life；城乡差距 the urban-rural gap。\n2. \"借助……把……销往\" 用分词 selling... through... 作伴随状语。\n3. \"为……作出贡献\" contribute to doing（to 是介词）。"
+  },
+  {
+    "level": "cet6", "type": "translation", "tags": ["传统文化", "中医"],
+    "stem": "请将下面这段话翻译成英文（六级段落翻译）。",
+    "material": "中医是中华民族在长期与疾病作斗争的过程中形成的医学体系，已有数千年的历史。中医强调人与自然的和谐统一，注重从整体上调理身体，而不仅仅是治疗某一症状。针灸、推拿和中草药是中医常用的治疗方法。如今，中医在许多国家得到认可，越来越多的外国人开始尝试中医疗法。中医的现代化与国际化，将为全人类的健康事业作出更大贡献。",
+    "answer": "Traditional Chinese Medicine (TCM) is a medical system developed by the Chinese nation over its long struggle against diseases, with a history of thousands of years. TCM emphasizes the harmony and unity between humans and nature, focusing on regulating the body as a whole rather than merely treating a particular symptom. Acupuncture, massage and herbal medicine are commonly used therapies in TCM. Today, TCM has been recognized in many countries, and a growing number of foreigners have begun to try TCM treatments. The modernization and internationalization of TCM will make greater contributions to the health of all mankind.",
+    "explanation": "评分要点：\n1. 关键词：中医 Traditional Chinese Medicine (TCM)；针灸 acupuncture；推拿 massage / tuina；中草药 (Chinese) herbal medicine；症状 symptom。\n2. \"在……过程中形成的\" 用过去分词短语 developed/formed in the course of 作后置定语。\n3. \"从整体上\" as a whole / holistically；\"而不仅仅是\" rather than merely。\n4. 首次出现 TCM 需写全称。"
+  },
+
+  {
+    "level": "cet4", "type": "writing", "tags": ["校园生活", "议论文"],
+    "stem": "Directions: For this part, you are allowed 30 minutes to write an essay on the importance of developing good study habits at college. You should write at least 120 words but no more than 180 words.",
+    "answer": "范文提纲：\n第一段（观点）：大学学习依赖自主性，良好的学习习惯是学业成功的基础。\n第二段（理由）：① 合理规划时间，避免考前突击（例：每周制定计划）；② 课前预习、课后复习提高效率；③ 主动利用图书馆与在线资源培养终身学习能力。\n第三段（建议/总结）：从小目标做起、坚持记录，习惯一旦养成将受益终身。\n\n参考开头：It is widely acknowledged that college life differs greatly from high school, as students are expected to take charge of their own learning. Therefore, developing good study habits is of vital importance.",
+    "explanation": "评分维度（5 分制，对应 15 分档）：\n5：切题，结构完整（开头-论证-结尾），论点 2-3 个且有例证，句式多样（定语从句、非谓语、倒装等），几乎无语法错误。\n4：切题，结构清楚，有少量语法错误但不影响理解。\n3：基本切题，论证简单，有一定数量语法错误。\n2：内容空洞或部分离题，语法错误较多。\n0-1：严重离题或字数严重不足。\n检查：字数 120-180；连接词（firstly / moreover / in conclusion）使用自然；避免整段套模板。"
+  },
+  {
+    "level": "cet4", "type": "writing", "tags": ["书信", "应用文"],
+    "stem": "Directions: Suppose your university is going to hold a volunteer activity to help elderly people in the community learn to use smartphones. Write a letter to the student union to apply for the position of volunteer. You should write at least 120 words but no more than 180 words.",
+    "answer": "范文提纲：\n称呼：Dear Student Union,\n第一段：说明写信目的——申请成为智能手机助老活动志愿者。\n第二段：个人优势——① 熟悉常用 App（支付、挂号、视频通话）；② 有耐心、沟通能力强，曾参加社区服务；③ 时间安排（周末有空）。\n第三段：表达期望与感谢，附联系方式。\n落款：Yours sincerely, Li Ming\n\n参考句：I am writing to apply for the position of volunteer in the upcoming activity, which aims to help senior citizens in our community master the use of smartphones.",
+    "explanation": "评分维度：\n1. 书信格式完整（称呼、正文、结束语、署名），署名用 Li Ming 等，不出现真实姓名。\n2. 内容覆盖：目的、个人条件、期望三要素，缺一项降一档。\n3. 语气礼貌得体（I would appreciate it if...；I am confident that...）。\n4. 语言准确、句式有变化。"
+  },
+  {
+    "level": "cet4", "type": "writing", "tags": ["社会热点", "图表/现象"],
+    "stem": "Directions: For this part, you are allowed 30 minutes to write an essay on the phenomenon that more and more college students are choosing to do part-time jobs. You should explain the reasons and give your opinion. You should write at least 120 words but no more than 180 words.",
+    "answer": "范文提纲：\n第一段（现象）：近年来越来越多的大学生利用课余时间做兼职。\n第二段（原因）：① 减轻家庭经济负担；② 积累工作经验、提高就业竞争力；③ 了解社会、锻炼沟通能力。\n第三段（观点）：兼职利大于弊，但应平衡学业与工作，选择与专业相关、安全可靠的岗位。\n\n参考句：Nowadays, it is not uncommon to see college students working as tutors, waiters or interns in their spare time.",
+    "explanation": "评分维度：\n1. 结构：现象-原因-观点，三部分齐全。\n2. 原因至少两条且有展开；观点明确，最好有辩证分析（advantages vs. potential risks）。\n3. 语言：有高级词汇（financial burden, competitiveness, strike a balance between）和复杂句。\n4. 字数 120-180，超出或不足酌情扣分。"
+  },
+  {
+    "level": "cet6", "type": "writing", "tags": ["科技", "议论文"],
+    "stem": "Directions: For this part, you are allowed 30 minutes to write an essay on the topic \"Should college students rely on AI tools to complete their assignments?\" You should write at least 150 words but no more than 200 words.",
+    "answer": "范文提纲：\n第一段（引入+立场）：AI 写作与编程工具在校园中迅速普及，引发关于学术诚信与学习效果的讨论；立场：可以把 AI 当作辅助，但不应依赖。\n第二段（承认益处）：快速检索资料、提供思路、纠正语法，提高效率。\n第三段（反驳依赖）：① 过度依赖削弱独立思考与写作能力；② 生成内容可能有事实错误；③ 直接提交违反学术诚信。\n第四段（结论+建议）：高校应制定明确使用规范，学生应把 AI 作为\"教练\"而非\"代笔\"。\n\n参考句：While AI tools can serve as a useful assistant, they should never become a substitute for students' own thinking.",
+    "explanation": "评分维度（六级要求论证深度）：\n5：立场鲜明，正反论证有层次，例证具体，词汇丰富（academic integrity, critical thinking, substitute for），句式多样，几乎无错。\n4：论证较充分，偶有语言错误。\n3：观点明确但论证单薄，或语言错误较多。\n2 及以下：观点模糊、结构混乱或明显跑题。\n字数 150-200。"
+  },
+  {
+    "level": "cet6", "type": "writing", "tags": ["名言/谚语", "议论文"],
+    "stem": "Directions: For this part, you are allowed 30 minutes to write an essay based on the saying \"A journey of a thousand miles begins with a single step.\" You can cite examples to illustrate your views. You should write at least 150 words but no more than 200 words.",
+    "answer": "范文提纲：\n第一段：解释谚语含义——再宏大的目标也要从眼前的小行动开始。\n第二段：举例论证——① 个人：备考六级从每天背 30 个单词开始，积少成多；② 社会/名人：科学家、运动员的成就源于日复一日的训练。\n第三段：反面论证——只空想不行动，目标永远停留在纸面上。\n第四段：总结与号召——设定可执行的小目标，坚持迈出每一步。\n\n参考句：Great achievements are seldom the result of a sudden leap; rather, they are built upon countless small and consistent efforts.",
+    "explanation": "评分维度：\n1. 对谚语的解读准确，不偏题。\n2. 至少两个具体例证（个人经历 + 社会/名人），例证与论点紧密相关。\n3. 有正反对比或让步论证者加分。\n4. 语言地道，避免堆砌空洞名言；字数 150-200。"
+  },
+  {
+    "level": "cet6", "type": "writing", "tags": ["社会", "现象分析"],
+    "stem": "Directions: For this part, you are allowed 30 minutes to write an essay on how to cope with information overload in the digital age. You should write at least 150 words but no more than 200 words.",
+    "answer": "范文提纲：\n第一段（现象）：社交媒体、短视频和推送通知让人每天接收海量信息，导致注意力分散、焦虑和判断力下降。\n第二段（对策）：① 主动筛选信息源，关注权威渠道；② 设定\"数字断联\"时间，关闭非必要通知；③ 培养深度阅读习惯，用笔记整理关键信息；④ 提升媒介素养，学会核实信息真伪。\n第三段（总结）：信息本身不是问题，关键在于成为信息的主人而非奴隶。\n\n参考句：In an era when information is just a click away, the ability to filter and focus has become more valuable than ever.",
+    "explanation": "评分维度：\n1. 先简述问题及危害，再给出 2-4 条具体可行的对策，最后总结。\n2. 对策之间有逻辑递进，配合连接词（To begin with / In addition / Last but not least）。\n3. 词汇：information overload, media literacy, distraction, digital detox, verify the authenticity。\n4. 字数 150-200，语法准确。"
+  }
+]
