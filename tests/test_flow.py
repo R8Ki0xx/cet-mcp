@@ -60,6 +60,11 @@ def test_subjective_flow(conn):
     assert conn.execute("SELECT COUNT(*) FROM attempts WHERE question_id = ?", (qid,)).fetchone()[0] == 0
     g = service.grade_subjective(conn, qid, "I like study.", 2, "study 应为 studying", today=D)
     assert g["in_wrongbook"] is True
+    item = service.wrongbook(conn)["items"][0]
+    assert item["last_feedback"] == "study 应为 studying"
+    assert "note" not in item  # 操作提示不能占用用户笔记字段
+    service.wrongbook_update(conn, qid, "note", "love doing sth")
+    assert service.wrongbook(conn)["items"][0]["note"] == "love doing sth"
     with pytest.raises(ValueError):
         service.grade_subjective(conn, qid, "x", 9)
 

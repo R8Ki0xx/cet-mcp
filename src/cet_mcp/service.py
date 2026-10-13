@@ -64,7 +64,7 @@ def public_question(row: sqlite3.Row) -> dict:
     if row["source"]:
         q["source"] = row["source"]
     if row["type"] in db.SUBJECTIVE_TYPES:
-        q["note"] = "主观题：作答后调用 submit_answer 获取参考答案与评分要点，再由 grade_subjective 记录得分"
+        q["hint"] = "主观题：作答后调用 submit_answer 获取参考答案与评分要点，再由 grade_subjective 记录得分"
     return q
 
 
@@ -214,7 +214,15 @@ def due_reviews(conn: sqlite3.Connection, level: str | None = None, limit: int =
     data["total_due"] = total
     data.pop("hint", None)
     if not data["questions"]:
-        data["message"] = "今天没有到期的复习题 ✅"
+        data["message"] = "今天没有到期的复习题"
+        nxt = conn.execute(
+            f"""SELECT r.due_date, COUNT(*) n FROM reviews r JOIN questions q ON q.id = r.question_id
+                WHERE r.due_date > ? {'AND q.level = ?' if level else ''}
+                GROUP BY r.due_date ORDER BY r.due_date LIMIT 1""",
+            params,
+        ).fetchone()
+        if nxt:
+            data["message"] += f"。下次复习：{nxt['due_date']}，共 {nxt['n']} 题（想现在就重做错题可用 practice 的 wrong 模式）"
     return data
 
 
@@ -231,6 +239,13 @@ def word_card(conn: sqlite3.Connection, word: str, level: str | None = None) -> 
         return None
     r = rows[0]
     load = lambda k: json.loads(r[k]) if r[k] else []  # noqa: E731
+    # 同一个词可能同时在四级、六级词表里，真题原句合并两个级别并去重
+    real_exam, seen = [], set()
+    for x in rows:
+        for s in json.loads(x["real_exam_json"]) if x["real_exam_json"] else []:
+            if s.get("en") not in seen:
+                seen.add(s.get("en"))
+                real_exam.append(s)
     card = {
         "word": r["word"],
         "levels": [x["level"].upper() for x in rows],
@@ -245,7 +260,7 @@ def word_card(conn: sqlite3.Connection, word: str, level: str | None = None) -> 
         "memory_tip": r["rem_method"],
         "real_exam_sentences": [
             f"[{' '.join(x for x in (s.get('year'), s.get('level'), s.get('paper'), s.get('type')) if x)}] {s['en']}"
-            for s in load("real_exam_json")
+            for s in real_exam
         ][:5],
     }
     return {k: v for k, v in card.items() if v}
@@ -326,7 +341,9 @@ def wrongbook(
     rows = conn.execute(
         f"""SELECT q.*, r.lapses, r.last_wrong, r.due_date, r.note, r.mastered,
                    (SELECT user_answer FROM attempts a WHERE a.question_id = q.id AND a.correct = 0
-                    ORDER BY a.id DESC LIMIT 1) AS last_wrong_answer
+                    ORDER BY a.id DESC LIMIT 1) AS last_wrong_answer,
+                   (SELECT feedback FROM attempts a WHERE a.question_id = q.id AND a.correct = 0
+                    ORDER BY a.id DESC LIMIT 1) AS last_feedback
             FROM reviews r JOIN questions q ON q.id = r.question_id
             WHERE {cond} ORDER BY {WRONGBOOK_SORTS[sort]} LIMIT ?""",
         [*params, max(1, min(int(limit), 200))],
@@ -342,6 +359,8 @@ def wrongbook(
             item["correct_answer"] = _answer_display(r)
             if r["explanation"]:
                 item["explanation"] = r["explanation"]
+            if r["last_feedback"]:
+                item["last_feedback"] = r["last_feedback"]
         if r["note"]:
             item["note"] = r["note"]
         items.append(item)
@@ -386,11 +405,14 @@ def export_wrongbook(conn: sqlite3.Connection, path: str | None = None, level: s
             lines += ["", q["material"]]
         lines += ["", q["stem"].replace("\n", "  \n"), ""]
         lines += [f"- {c}" for c in q.get("choices", [])]
-        lines += ["", f"**正确答案**：{q['correct_answer']}"]
+        subjective = bool(q.get("hint"))
+        lines += ["", f"**{'参考答案' if subjective else '正确答案'}**：{q['correct_answer']}"]
         if q.get("your_last_wrong_answer"):
-            lines.append(f"**我上次的答案**：{q['your_last_wrong_answer']}")
+            lines += ["", f"**我上次的答案**：{q['your_last_wrong_answer']}"]
+        if q.get("last_feedback"):
+            lines += ["", f"**批改意见**：{q['last_feedback']}"]
         if q.get("explanation"):
-            lines += ["", "**解析**：", "", q["explanation"].replace("\n", "  \n")]
+            lines += ["", f"**{'评分要点' if subjective else '解析'}**：", "", q["explanation"].replace("\n", "  \n")]
         if q.get("note"):
             lines += ["", f"**笔记**：{q['note']}"]
         lines += ["", "---", ""]
@@ -480,7 +502,7 @@ def report(conn: sqlite3.Connection, days: int = 7, today: date | None = None) -
         d[0] += r["correct"]
         d[1] += 1
     all_days = {r[0] for r in conn.execute("SELECT DISTINCT substr(answered_at, 1, 10) FROM attempts")}
-    weak = sorted(((c / n, k) for k, (c, n) in by_type.items() if n >= 5))
+    weak = sorted(((c / n, k) for k, (c, n) in by_type.items() if n >= 3 and c < n))
     missed = conn.execute(
         """SELECT w.word, w.level, SUM(r.lapses) lapses FROM reviews r
            JOIN questions q ON q.id = r.question_id JOIN words w ON w.id = q.word_id
