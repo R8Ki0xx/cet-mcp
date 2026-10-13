@@ -66,8 +66,44 @@ def test_distractors_exclude_synonyms():
     target = _w("absorb", syno={"attract", "seize", "engage"})
     for kind in ("a", "b", "c", "d", "e"):
         rng = generators._rng("cet4", "absorb", kind)
-        ds = generators._pick_distractors(rng, POOL, target, 3, lambda c: c["word"], set())
+        ds, _ = generators._pick_distractors(rng, POOL, target, 3, lambda c: c["word"], set())
         assert not {d["word"] for d in ds} & target["syno"]
+
+
+def _wt(word, pos, cn, rel=()):
+    w = _w(word, pos)
+    w["trans"] = [{"pos": pos, "cn": cn}]
+    w["terms"] = generators._terms(w["trans"])
+    w["rel"] = set(rel)
+    return w
+
+
+def test_lookalikes_found_and_related_words_excluded():
+    words = [
+        _wt("adapt", "v", "适应，改编"), _wt("adopt", "v", "采用，收养"), _wt("adept", "adj", "熟练的"),
+        _wt("adaptation", "n", "适应，改编"), _wt("adaptable", "adj", "能适应的", rel={"adapt"}),
+        _wt("banana", "n", "香蕉"), _wt("fit", "v", "适应，适合"),
+    ]
+    alike = generators.build_lookalikes(words)
+    names = [w["word"] for w in alike[0]]
+    assert names[0] == "adopt"  # 同词性、编辑距离最小的排第一
+    assert "adept" in names
+    # 派生词、同根词、释义重叠的词、毫不相像的词都不算形近词
+    assert not {"adaptation", "adaptable", "fit", "banana"} & set(names)
+
+
+def test_en2cn_prefers_lookalikes_and_explains_them():
+    words = [_wt("adapt", "v", "适应"), _wt("adopt", "v", "采用"), _wt("adept", "adj", "熟练的")]
+    pool = words + [_wt(x, "v", x + "义") for x in ("run", "eat", "sing", "swim", "read")]
+    alike = generators.build_lookalikes(words)[0]
+    q = generators.gen_en2cn("cet4", words[0], pool, alike)
+    assert "v. 采用" in q["choices"] and "adj. 熟练的" in q["choices"]
+    assert "易混形近词" in q["explanation_prefix"] and "adopt" in q["explanation_prefix"]
+
+
+def test_levenshtein():
+    assert generators.levenshtein("kitten", "sitting") == 3
+    assert generators.levenshtein("", "abc") == 3
 
 
 def test_spelling_hides_phonetic_identical_to_word():

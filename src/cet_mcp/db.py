@@ -67,6 +67,7 @@ CREATE TABLE IF NOT EXISTS questions (
     created_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
 );
 CREATE INDEX IF NOT EXISTS idx_q_level_type ON questions(level, type);
+CREATE INDEX IF NOT EXISTS idx_q_word_type ON questions(word_id, type);
 
 CREATE TABLE IF NOT EXISTS attempts (
     id INTEGER PRIMARY KEY,
